@@ -391,17 +391,18 @@ class SuperBenchRunner():
         for k, v in mode.env.items():
             if isinstance(v, str):
                 env_list += f' -e {k}={str(v).format(proc_rank=mode.proc_rank, proc_num=mode.proc_num)}'
+
         ansible_runner_config = self._ansible_client.get_shell_config(
-            "docker exec {env_list} sb-workspace bash -c '{command}'".format(
-                env_list=env_list, command=self.__get_mode_command(benchmark_name, mode, timeout)
-            )
+                self.__get_mode_command(benchmark_name, mode, timeout)
         )
+
         if mode.name == 'mpi':
             ansible_runner_config = self._ansible_client.update_mpi_config(ansible_runner_config)
 
         ansible_runner_config['timeout'] = timeout
 
-        rc = self._ansible_client.run(ansible_runner_config, sudo=True)
+        rc = self._ansible_client.run(ansible_runner_config)
+
         return rc
 
     def run(self):

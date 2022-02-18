@@ -86,6 +86,7 @@ class CudaGemmFlopsBenchmark(GemmFlopsBenchmark):
             command = os.path.join(self._args.bin_dir, self._bin_name)
             command += (' --warmup-iterations=' + str(self._args.num_warmup))
             command += (' --operation=gemm')
+            command += (' --verification-enabled=1')
             command += (' --n=' + str(self._args.n))
             command += (' --k=' + str(self._args.k))
             command += (' --m=' + str(self._args.m))
